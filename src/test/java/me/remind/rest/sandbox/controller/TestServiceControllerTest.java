@@ -3,6 +3,7 @@ package me.remind.rest.sandbox.controller;
 import me.remind.rest.sandbox.dto.ServiceResponseDTO;
 import me.remind.rest.sandbox.service.TestService;
 import org.hamcrest.Matchers;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +28,15 @@ public class TestServiceControllerTest {
     @MockBean
     private TestService testService;
 
-    private ServiceResponseDTO serviceResponseDTO = ServiceResponseDTO.builder()
-            .id(1)
-            .userId(90000)
-            .body("Body")
-            .title("Title")
-            .build();
+    private ServiceResponseDTO serviceResponseDTO = new ServiceResponseDTO();
+
+    @Before
+    public void setup(){
+        serviceResponseDTO.setId(1);
+        serviceResponseDTO.setUserId(9000);
+        serviceResponseDTO.setBody("Body");
+        serviceResponseDTO.setTitle("Title");
+    }
 
     @Test
     public void getServiceResponse() throws Exception {
@@ -47,7 +51,7 @@ public class TestServiceControllerTest {
                         Matchers.is(1)))
                 .andExpect(MockMvcResultMatchers.jsonPath(
                         "userId",
-                        Matchers.is(90000)));
+                        Matchers.is(9000)));
     }
 
 }
