@@ -4,6 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import me.remind.rest.sandbox.dto.ResultMessage;
 import me.remind.rest.sandbox.dto.UserRegisterDTO;
 import me.remind.rest.sandbox.dto.UserUpdateDTO;
+import me.remind.rest.sandbox.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -12,29 +14,36 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/users")
 public class UserServiceController {
+    private UserService userService;
+
+    @Autowired
+    public UserServiceController(UserService userService){
+        this.userService = userService;
+    }
+
     @GetMapping
     public ResultMessage getUsers(){
-        return null;
+        return userService.getUsers();
     }
 
     @GetMapping(value = "/{id}")
     public ResultMessage getUser(@PathVariable UUID id){
-        return null;
+        return userService.getUser(id);
     }
 
     @PostMapping
     public ResultMessage saveUser(@RequestBody UserRegisterDTO dto){
-        return null;
+        return userService.saveUser(dto);
     }
 
     @PutMapping(value = "/{id}")
     public ResultMessage updateUser(@PathVariable UUID id, @RequestBody UserUpdateDTO dto){
         dto.setId(id);
-        return null;
+        return userService.updateUser(dto);
     }
 
     @DeleteMapping(value = "/{id}")
     public ResultMessage deleteUser(@PathVariable UUID id){
-        return null;
+        return userService.deleteUser(id);
     }
 }
