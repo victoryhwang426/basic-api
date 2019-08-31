@@ -19,9 +19,6 @@ Git-repositories as well as their programming language. The query of the Git-rep
 done at runtime.
 Also take into account that the communication should be reused in other controller or services.
 
-The micro-service can be based on the sandbox provided by remind.me. The sandbox has a default
-configuration for developing REST services.
-Remind.me REST sandbox: https://github.com/remind-me-gmbh/remind-me-rest-sandbox
 Github API Documentation: https://developer.github.com/v3/
 Note: The Github API has a rate limit of 60 requests / hour for unauthenticated requests
 (https://developer.github.com/v3/#rate-limiting). For this reason, it is recommended to enter a
