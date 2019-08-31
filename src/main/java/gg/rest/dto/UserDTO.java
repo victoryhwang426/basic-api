@@ -8,7 +8,7 @@ import lombok.Data;
 import java.util.UUID;
 
 @Data
-public class UserUpdateDTO {
+public class UserDTO {
     @JsonProperty("id")
     private UUID id;
 
@@ -25,7 +25,7 @@ public class UserUpdateDTO {
 
     public User toEntity(){
         return User.builder()
-                .id(id)
+                .id(id == null ? UUID.randomUUID() : id)
                 .firstName(firstName)
                 .surName(surName)
                 .position(position)
@@ -34,11 +34,11 @@ public class UserUpdateDTO {
     }
 
     @Builder
-    public UserUpdateDTO(UUID id,
-                         String firstName,
-                         String surName,
-                         String position,
-                         String githubProfileUrl) {
+    public UserDTO(UUID id,
+                   String firstName,
+                   String surName,
+                   String position,
+                   String githubProfileUrl) {
         this.id = id;
         this.firstName = firstName;
         this.surName = surName;

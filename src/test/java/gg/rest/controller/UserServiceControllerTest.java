@@ -3,8 +3,7 @@ package gg.rest.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gg.rest.service.UserService;
 import gg.rest.dto.ResultMessage;
-import gg.rest.dto.UserRegisterDTO;
-import gg.rest.dto.UserUpdateDTO;
+import gg.rest.dto.UserDTO;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,14 +37,7 @@ public class UserServiceControllerTest {
     private ResultMessage resultMessage
             = new ResultMessage(ResultMessage.ResponseMessage.SUCCESS);
 
-    private UserRegisterDTO registerDto = UserRegisterDTO.builder()
-            .firstName("Seungri")
-            .surName("Hwang")
-            .position("Java developer")
-            .build();
-
-    private UserUpdateDTO updateDto = UserUpdateDTO.builder()
-            .id(UUID.randomUUID())
+    private UserDTO userDTO = UserDTO.builder()
             .firstName("Seungri")
             .surName("Hwang")
             .position("Java developer")
@@ -80,11 +72,11 @@ public class UserServiceControllerTest {
 
     @Test
     public void saveUser() throws Exception {
-        when(userService.saveUser(any(UserRegisterDTO.class))).thenReturn(resultMessage);
+        when(userService.saveUser(any(UserDTO.class))).thenReturn(resultMessage);
 
         mvc.perform(MockMvcRequestBuilders.post("/users")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(registerDto))
+                .content(objectMapper.writeValueAsString(userDTO))
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -97,11 +89,12 @@ public class UserServiceControllerTest {
     @Test
     public void updateUser() throws Exception {
         UUID id = UUID.randomUUID();
-        when(userService.updateUser(any(UserUpdateDTO.class))).thenReturn(resultMessage);
+        userDTO.setId(id);
+        when(userService.updateUser(any(UserDTO.class))).thenReturn(resultMessage);
 
         mvc.perform(MockMvcRequestBuilders.put("/users/"+id)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(updateDto))
+                .content(objectMapper.writeValueAsString(userDTO))
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())

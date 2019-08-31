@@ -3,8 +3,7 @@ package gg.rest.controller;
 import gg.rest.dto.ResultMessage;
 import gg.rest.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import gg.rest.dto.UserRegisterDTO;
-import gg.rest.dto.UserUpdateDTO;
+import gg.rest.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,12 +31,12 @@ public class UserServiceController {
     }
 
     @PostMapping
-    public ResultMessage saveUser(@RequestBody UserRegisterDTO dto){
+    public ResultMessage saveUser(@RequestBody UserDTO dto){
         return userService.saveUser(dto);
     }
 
     @PutMapping(value = "/{id}")
-    public ResultMessage updateUser(@PathVariable UUID id, @RequestBody UserUpdateDTO dto){
+    public ResultMessage updateUser(@PathVariable UUID id, @RequestBody UserDTO dto){
         dto.setId(id);
         return userService.updateUser(dto);
     }

@@ -4,8 +4,7 @@ import gg.rest.model.User;
 import gg.rest.repository.UserRepository;
 import gg.rest.service.UserService;
 import gg.rest.dto.ResultMessage;
-import gg.rest.dto.UserRegisterDTO;
-import gg.rest.dto.UserUpdateDTO;
+import gg.rest.dto.UserDTO;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,14 +32,7 @@ public class UserServiceImplTest {
         userService = new UserServiceImpl(userRepository);
     }
 
-    private UserRegisterDTO registerDto = UserRegisterDTO.builder()
-            .firstName("Seungri")
-            .surName("Hwang")
-            .position("Java developer")
-            .build();
-
-    private UserUpdateDTO updateDto = UserUpdateDTO.builder()
-            .id(UUID.randomUUID())
+    private UserDTO userDTO = UserDTO.builder()
             .firstName("Seungri")
             .surName("Hwang")
             .position("Java developer")
@@ -49,7 +41,7 @@ public class UserServiceImplTest {
     @Test
     public void getUser_should_return_user_response_dto(){
         UUID id = UUID.randomUUID();
-        when(userRepository.findById(id)).thenReturn(Optional.of(registerDto.toEntity()));
+        when(userRepository.findById(id)).thenReturn(Optional.of(userDTO.toEntity()));
 
         ResultMessage resultMessage = userService.getUser(id);
 
@@ -77,7 +69,7 @@ public class UserServiceImplTest {
     @Test
     public void getUsers_should_return_list_of_user_response_dto(){
         List<User> users = new ArrayList<>();
-        users.add(updateDto.toEntity());
+        users.add(userDTO.toEntity());
 
         when(userRepository.findAll()).thenReturn(users);
 
@@ -105,9 +97,9 @@ public class UserServiceImplTest {
 
     @Test
     public void saveUser_should_call_save(){
-        when(userRepository.save(any(User.class))).thenReturn(registerDto.toEntity());
+        when(userRepository.save(any(User.class))).thenReturn(userDTO.toEntity());
 
-        ResultMessage resultMessage = userService.saveUser(registerDto);
+        ResultMessage resultMessage = userService.saveUser(userDTO);
 
         verify(userRepository).save(any(User.class));
 
@@ -117,14 +109,15 @@ public class UserServiceImplTest {
 
     @Test
     public void updateUser_should_call_save(){
-        User user = updateDto.toEntity();
+        userDTO.setId(UUID.randomUUID());
+        User user = userDTO.toEntity();
 
-        when(userRepository.findById(updateDto.getId())).thenReturn(Optional.of(user));
+        when(userRepository.findById(userDTO.getId())).thenReturn(Optional.of(user));
         user.setFirstName("Victor");
 
         when(userRepository.save(user)).thenReturn(user);
 
-        ResultMessage resultMessage = userService.updateUser(updateDto);
+        ResultMessage resultMessage = userService.updateUser(userDTO);
 
         verify(userRepository).save(user);
 
@@ -134,11 +127,12 @@ public class UserServiceImplTest {
 
     @Test
     public void updateUser_should_return_empty_when_no_found(){
-        when(userRepository.findById(updateDto.getId())).thenReturn(Optional.empty());
+        userDTO.setId(UUID.randomUUID());
+        when(userRepository.findById(userDTO.getId())).thenReturn(Optional.empty());
 
-        ResultMessage resultMessage = userService.updateUser(updateDto);
+        ResultMessage resultMessage = userService.updateUser(userDTO);
 
-        verify(userRepository).findById(updateDto.getId());
+        verify(userRepository).findById(userDTO.getId());
         verifyNoMoreInteractions(userRepository);
 
         assertNull(resultMessage.getContent());
@@ -147,13 +141,14 @@ public class UserServiceImplTest {
 
     @Test
     public void deleteUser_should_call_delete(){
-        User user = updateDto.toEntity();
+        userDTO.setId(UUID.randomUUID());
+        User user = userDTO.toEntity();
 
-        when(userRepository.findById(updateDto.getId())).thenReturn(Optional.of(user));
+        when(userRepository.findById(userDTO.getId())).thenReturn(Optional.of(user));
 
-        ResultMessage resultMessage = userService.deleteUser(updateDto.getId());
+        ResultMessage resultMessage = userService.deleteUser(userDTO.getId());
 
-        verify(userRepository).findById(updateDto.getId());
+        verify(userRepository).findById(userDTO.getId());
         verify(userRepository).delete(user);
 
         assertEquals(ResultMessage.ResponseMessage.SUCCESS, resultMessage.getResponseMessage().SUCCESS);
@@ -161,11 +156,12 @@ public class UserServiceImplTest {
 
     @Test
     public void deleteUser_should_return_empty_when_no_found(){
-        when(userRepository.findById(updateDto.getId())).thenReturn(Optional.empty());
+        userDTO.setId(UUID.randomUUID());
+        when(userRepository.findById(userDTO.getId())).thenReturn(Optional.empty());
 
-        ResultMessage resultMessage = userService.deleteUser(updateDto.getId());
+        ResultMessage resultMessage = userService.deleteUser(userDTO.getId());
 
-        verify(userRepository).findById(updateDto.getId());
+        verify(userRepository).findById(userDTO.getId());
         verifyNoMoreInteractions(userRepository);
 
         assertEquals(ResultMessage.ResponseMessage.NOT_FOUND, resultMessage.getResponseMessage().NOT_FOUND);
