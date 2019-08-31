@@ -1,7 +1,7 @@
 package gg.rest.service;
 
 import gg.rest.dto.ResultMessage;
-import gg.rest.dto.UserDTO;
+import gg.rest.dto.UserRegisterDTO;
 
 import java.util.UUID;
 
@@ -10,9 +10,9 @@ public interface UserService {
 
     ResultMessage getUsers();
 
-    ResultMessage saveUser(UserDTO dto);
+    ResultMessage saveUser(UserRegisterDTO dto);
 
-    ResultMessage updateUser(UserDTO dto);
+    ResultMessage updateUser(UserRegisterDTO dto);
 
     ResultMessage deleteUser(UUID id);
 }

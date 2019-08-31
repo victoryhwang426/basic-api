@@ -4,7 +4,7 @@ import gg.rest.model.User;
 import gg.rest.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import gg.rest.dto.ResultMessage;
-import gg.rest.dto.UserDTO;
+import gg.rest.dto.UserRegisterDTO;
 import gg.rest.dto.UserResponseDTO;
 import gg.rest.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public ResultMessage saveUser(UserDTO dto) {
+    public ResultMessage saveUser(UserRegisterDTO dto) {
         User user = userRepository.save(dto.toEntity());
 
         return new ResultMessage(ResultMessage.ResponseMessage.SUCCESS, user);
@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public ResultMessage updateUser(UserDTO dto) {
+    public ResultMessage updateUser(UserRegisterDTO dto) {
         Optional<User> optUser = userRepository.findById(dto.getId());
 
         if(optUser.isPresent()){

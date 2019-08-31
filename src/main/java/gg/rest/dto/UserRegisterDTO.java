@@ -8,7 +8,7 @@ import lombok.Data;
 import java.util.UUID;
 
 @Data
-public class UserDTO {
+public class UserRegisterDTO {
     @JsonProperty("id")
     private UUID id;
 
@@ -34,11 +34,11 @@ public class UserDTO {
     }
 
     @Builder
-    public UserDTO(UUID id,
-                   String firstName,
-                   String surName,
-                   String position,
-                   String githubProfileUrl) {
+    public UserRegisterDTO(UUID id,
+                           String firstName,
+                           String surName,
+                           String position,
+                           String githubProfileUrl) {
         this.id = id;
         this.firstName = firstName;
         this.surName = surName;
